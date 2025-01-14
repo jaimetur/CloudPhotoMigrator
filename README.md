@@ -29,7 +29,7 @@ Then you just need to call it depending on your environment:
 
 ## Syntax:
 ```
-----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
 usage: OrganizeTakeoutPhotos.py [-h] [-v] [-z <ZIP_FOLDER>]
                                 [-t <TAKEOUT_FOLDER>] [-s <SUFIX>]
                                 [-as ['flatten', 'year', 'year/month', 'year-month']]
@@ -49,7 +49,7 @@ OrganizeTakeoutPhotos v2.3.0 - 2025-01-14
 
 Script (based on GPTH Tool) to Process Google Takeout Photos and much more useful features
 (remove duplicates, fix metadata, organize per year/month folder, separate Albums, fix symlinks, etc...).
-(c) by Jaime Tur (@jaimetur)
+(c) 2024-2025 by Jaime Tur (@jaimetur)
 
 options:
 
@@ -167,7 +167,7 @@ If more than one Extra Mode is detected, only the first one will be executed.
 -idd, --immich-delete-duplicates-albums
         The script will look for all Albums in Immich Photos database and if any
         Album is duplicated, will remove it from Immich Photos database.
-----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
 ```
 
 Example of use:
