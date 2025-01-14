@@ -371,4 +371,4 @@ With this example, the script will connect to Synology Photos database and will 
 I hope this can be useful for any of you.  
 Enjoy it!
 
-<span style="color:grey">Jaime Tur (@jaimetur) - 2024.</span>
+<span style="color:grey">Jaime Tur (@jaimetur) - 2024-2025.</span>
