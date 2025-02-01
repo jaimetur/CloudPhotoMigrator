@@ -1,23 +1,33 @@
-## Download Latest Stable Version:
+## Download Latest Version:
 Download the script either Linux, MacOS or Windows version (for both x64/amd64 or arm64 architectures) as you prefeer directly from following links:
 
 **Linux:**:  
-  - [Download AMD 64 bits version](https://github.com/jaimetur/OrganizeTakeoutPhotos/raw/refs/heads/main/_built_versions/2.3.0/OrganizeTakeoutPhotos_v2.3.0_linux_amd64.zip)  
-  - [Download ARM 64 bits version](https://github.com/jaimetur/OrganizeTakeoutPhotos/raw/refs/heads/main/_built_versions/2.3.0/OrganizeTakeoutPhotos_v2.3.0_linux_arm64.zip)  
+  - [Download AMD 64 bits version](https://github.com/jaimetur/CloudPhotoMigrator/raw/refs/heads/main/_built_versions/3.0.0-alpha/CloudPhotoMigrator_v3.0.0-alpha_linux_amd64.zip)  
+  - [Download ARM 64 bits version](https://github.com/jaimetur/CloudPhotoMigrator/raw/refs/heads/main/_built_versions/3.0.0-alpha/CloudPhotoMigrator_v3.0.0-alpha_linux_arm64.zip)  
 
 **Mac OS:**
-  - [Download AMD 64 bits version](https://github.com/jaimetur/OrganizeTakeoutPhotos/raw/refs/heads/main/_built_versions/2.3.0/OrganizeTakeoutPhotos_v2.3.0_macos_amd64.zip)  
-  - [Download ARM 64 bits version](https://github.com/jaimetur/OrganizeTakeoutPhotos/raw/refs/heads/main/_built_versions/2.3.0/OrganizeTakeoutPhotos_v2.3.0_macos_arm64.zip)  
+  - [Download AMD 64 bits version](https://github.com/jaimetur/CloudPhotoMigrator/raw/refs/heads/main/_built_versions/3.0.0-alpha/CloudPhotoMigrator_v3.0.0-alpha_macos_amd64.zip)  
+  - [Download ARM 64 bits version](https://github.com/jaimetur/CloudPhotoMigrator/raw/refs/heads/main/_built_versions/3.0.0-alpha/CloudPhotoMigrator_v3.0.0-alpha_macos_arm64.zip)  
 
 **Windows:**  
-- [Download AMD 64 bits version](https://github.com/jaimetur/OrganizeTakeoutPhotos/raw/refs/heads/main/_built_versions/2.3.0/OrganizeTakeoutPhotos_v2.3.0_windows_amd64.zip)
+- [Download AMD 64 bits version](https://github.com/jaimetur/CloudPhotoMigrator/raw/refs/heads/main/_built_versions/3.0.0-alpha/CloudPhotoMigrator_v3.0.0-alpha_windows_amd64.zip)  
 
 ---
 
 ## Release Notes:
 
-**Release**: 2.4.0  
-**Date**: 2025-01-31
+**Release**: 3.0.0  
+**Date**: 2025-02-01
+
+- [x] New Script name '**CloudPhotoMigrator**' (former 'GoogleTakeoutPhotos')
+- [x] New Automated Migration Feature to perform Fully automated migration process between different Photo Cloud Services
+- [x] Added Support for Immich Photos
+- [x] Replaced 'ALL_PHOTOS' by 'Others' as output subfolder for assets without any album associated (be careful if you already run the script with previous version because before, the folder for assets without albums was named 'ALL_PHOTOS')
+- [x] Added colors to --help text for a better visualization.
+- [x] Refactor and group All Google Takeout arguments in one block for 'Google Photos Takeout' Support
+- [X] Refactor normal_mode to google_takeout_mode
+- [x] Merged -z and -t options in just one option ('-gitf, -google-input-takeout-folder') and detect if contains Takeout Zip files, in that case Zip files will be Unzipped to <TAKEOUT_FOLDER>_TIMESTAMP folder
+- [x] Unificated a single Config.ini file and included tags for the different configuration sections
 
 - Renamed options:
   - -sea, --synology-extract-albums is now **-sda, --synology-download-albums**
@@ -25,8 +35,8 @@ Download the script either Linux, MacOS or Windows version (for both x64/amd64 o
 
 
 - Added new option to Synology Photos Support:
-  - **-suf, --synology-upload-folder <FOLDER>**  
-          The script will look for all Photos/Videos within <FOLDER> and will upload them into Synology Photos.
+  - **-suf, --synology-upload-folder \<FOLDER>**  
+            The script will look for all Photos/Videos within <FOLDER> and will upload them into Synology Photos.
 
 
 - With those changes the support for Synology Photos has the following options:
@@ -34,15 +44,18 @@ Download the script either Linux, MacOS or Windows version (for both x64/amd64 o
           The script will look for all Albums in Synology Photos database and if any Album is empty, will remove it from Synology Photos database.  
   - **-sdd, --synology-delete-duplicates-albums**  
           The script will look for all Albums in Synology Photos database and if any Album is duplicated, will remove it from Synology Photos database.
-  - **-suf, --synology-upload-folder <FOLDER>**  
+  - **-suf, --synology-upload-folder \<FOLDER>**  
           The script will look for all Photos/Videos within <FOLDER> and will upload them into Synology Photos.
-  - **-sua, --synology-upload-albums <ALBUMS_FOLDER>**  
+  - **-sua, --synology-upload-albums \<ALBUMS_FOLDER>**  
           The script will look for all Albums within <ALBUMS_FOLDER> and will create one Album per folder into Synology Photos.
-  - **-sda, --synology-download-albums <ALBUMS_NAME>**  
+  - **-sda, --synology-download-albums \<ALBUMS_NAME>**  
           The Script will connect to Synology Photos and download the Album whose name is <ALBUMS_NAME> to the folder 'Synology_Photos_Albums' within the Synology Photos root folder.  
           To download several albums you can separate their names by comma or space and put the name between double quotes. i.e: --synology-download-albums "album1", "album2", "album3".  
           To download ALL Albums use "ALL" as <ALBUMS_NAME>.  
-
+  - **-sdA, --synology-download-ALL \<OUTPUT_FOLDER>**  
+          The Script will connect to Synology Photos and will download all the Album and Assets without Albums into the folder <OUTPUT_FOLDER>.  
+          - Albums will be downloaded within a subfolder '<OUTPUT_FOLDER>/Albums/' with the same name of the Album and all files will be flattened into it.  
+          - Assets with no Albums associated will be downloaded within a subfolder 'OUTPUT_FOLDER/Others/' and will have a year/month structure inside.
 
 - Added Support for Immich Photos with the ollowing options to manage Immich API:
   - **-ide, --immich-delete-empty-albums**  
@@ -51,18 +64,18 @@ Download the script either Linux, MacOS or Windows version (for both x64/amd64 o
   - **-idd, --immich-delete-duplicates-albums**  
           The script will look for all Albums in Immich Photos database and if any
           Album is duplicated, will remove it from Immich Photos database.  
-  - **-iuf, --immich-upload-folder <FOLDER>**    
+  - **-iuf, --immich-upload-folder \<FOLDER>**    
           The script will look for all Photos/Videos within <FOLDER> and will upload them into Immich Photos.  
-  - **-iua, --immich-upload-albums <ALBUMS_FOLDER>**  
+  - **-iua, --immich-upload-albums \<ALBUMS_FOLDER>**  
           The script will look for all Albums within <ALBUMS_FOLDER> and will create one Album per folder into Immich Photos.  
-  - **-ida, --immich-download-albums <ALBUMS_NAME>**  
+  - **-ida, --immich-download-albums \<ALBUMS_NAME>**  
           The Script will connect to Immich Photos and download the Album whose name is <ALBUMS_NAME> to the folder 'Immich_Photos_Albums' within the Immich Photos root folder.  
           To download several albums you can separate their names by comma or space and put the name between double quotes. i.e: --immich-download-albums" "album1", "album2", "album3".  
           To download ALL Albums use "ALL" as <ALBUMS_NAME>.   
-  - **-iDA, --immich-download-all <FOLDER>**  
-          The Script will connect to Immich Photos and will download all the Album and Assets without Albums into the folder <FOLDER>.  
-          - Albums will be downloaded within a subfolder of <FOLDER>/Albums/ with the same name of the Album and all files will be flattened into it.  
-          - Assets with no Albums associated will be downloaded withn a subfolder called <FOLDER>/Others/ and will have a year/month structure inside.
+  - **-idA, --immich-download-ALL \<OUTPUT_FOLDER>**  
+          The Script will connect to Immich Photos and will download all the Album and Assets without Albums into the folder <OUTPUT_FOLDER>.  
+          - Albums will be downloaded within a subfolder of '<OUTPUT_FOLDER>/Albums/' with the same name of the Album and all files will be flattened into it.  
+          - Assets with no Albums associated will be downloaded withn a subfolder called '<OUTPUT_FOLDER>/Others/' and will have a year/month structure inside.
 
 
 - Added support to include sidecar files when upload assts to Immich
