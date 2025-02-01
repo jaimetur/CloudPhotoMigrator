@@ -285,7 +285,7 @@ This step is useful if you want to Upload all your Albums to a new Cloud Service
 
 > [!NOTE]  
 >## <span style="color:green"> Fully Automated Migration Feature</span>
->From version 3.0.0 onwards,the script supports a new Extra Mode called -AUTO, --AUTOMATED-MIGRATION Mode. 
+>From version 3.0.0 onwards, the script supports a new Extra Mode called -AUTO, --AUTOMATED-MIGRATION Mode. 
 >
 >If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will automatically do the whole migration jon from \<SOURCE> Cloud Service to \<TARGET> Cloud Service.
 >The script will do a FULLY-AUTOMATED job which has two steps:  
@@ -328,9 +328,9 @@ Withh this example, the script will do a FULLY-AUTOMATED job which has two
       upload all the assets processed in previous step, creating a new Album per each Album found in your Synology Photos and associating
       all the assets included in each Album in the same way that you had on your Synology Photos account.
 
-> [!NOTE]
-> ## <span style="color:green">Google Photos Takeout Support</span>
->The script can process your Google Takeout files to fix timestamp, geodata, organize files per year/month, organize assets within album(s) in subfolders, etc...
+>[!NOTE]
+>## <span style="color:green">Google Photos Support</span>
+>From version 1.0.0 onwards, the script can process your Google Photos Takeout files to fix timestamp, geodata, organize files per year/month, organize assets within album(s) in subfolders, etc...
 >
 >>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
 >>
@@ -338,7 +338,7 @@ Withh this example, the script will do a FULLY-AUTOMATED job which has two
 >># Configuration for Google Photos
 >>[Google Photos]
 >>```
-For the time being, Google Photos Takeout support, does not need to include anything in the Config.ini, but it has it own section for futures features.
+>For the time being, Google Photos Takeout support, does not need to include anything in the Config.ini, but it has it own section for futures features.
 
 ### <span style="color:blue">Google Takeout Mode: Process Explained:</span>
 
@@ -384,8 +384,8 @@ The whole process took around **~8.5 hours** (or **~3 hours without last two opt
    
 NOTE: Step 8 is disabled by default, and is only recommended if you want to save disk space and want to avoid having the same physical file in more than one folder (in case that the same file belongs to multiples Albums).
 
-> [!NOTE]
-> ## <span style="color:green">Synology Photos Support</span>
+>[!NOTE]
+>## <span style="color:green">Synology Photos Support</span>
 >From version 2.0.0 onwards, the script can connect to your Synology NAS and login into Synology Photos App with your credentials. The credentials need to be loaded from 'Config.ini' file and will have this format:
 >
 >>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
@@ -398,6 +398,13 @@ NOTE: Step 8 is disabled by default, and is only recommended if you want to save
 >>SYNOLOGY_PASSWORD           = password                                      # Your password for Synology Photos
 >>SYNOLOGY_ROOT_PHOTOS_PATH   = /volume1/homes/your_username/Photos           # Your root path to Synology Photos main folder. Tipically is /volume1/homes/your_username/Photos
 >>```
+>### Features included:
+> - Delete Empty Albums
+> - Delete Duplicates Albums
+> - Upload Folder
+> - Upload Album(s)
+> - Download Album(s)
+> - Upload/Download ALL
 
 ### <span style="color:blue">Delete Empty Albums in Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Delete Empty Albums in Synology Photos' Mode. 
@@ -507,10 +514,18 @@ With this example, the script will connect to Synology Photos database and extra
 >>```
 >># Configuration for Immich Photos
 >>[Immich Photos]
->>IMMICH_URL                = http://192.168.1.11:2283                      # Change this IP by the IP that contains the Immich server or by your valid Immich URL
->>IMMICH_USERNAME           = username                                      # Your username for Immich Photos
->>IMMICH_PASSWORD           = password                                      # Your password for Immich Photos
+>>IMMICH_URL                  = http://192.168.1.11:2283                      # Change this IP by the IP that contains the Immich server or by your valid Immich URL
+>>IMMICH_API_KEY              = YOUR_API_KEY                                  # Optional: Your API_KEY for Immich Photos (Your can create can API_KEY in your Account Settings-->API_KEY Keys)
+>>IMMICH_USERNAME             = username                                      # Optional: Your username for Immich Photos (mandatory if not API_KEY is providen)
+>>IMMICH_PASSWORD             = password                                      # Optional: Your password for Immich Photos (mandatory if not API_KEY is providen)
 >>```
+>### Features included:
+> - Delete Empty Albums
+> - Delete Duplicates Albums
+> - Upload Folder
+> - Upload Album(s)
+> - Download Album(s)
+> - Upload/Download ALL
 
 ### <span style="color:blue">Delete Empty Albums in Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Delete Empty Albums in Immich Photos' Mode. 
@@ -613,7 +628,7 @@ With this example, the script will connect to Immich Photos database and extract
 
 
 > [!NOTE]
-> ## <span style="color:green">ADDITIONAL STANDALONE EXTRA MODES</span>
+> ## <span style="color:green">Other Standalone Features</span>
 >Additionally, this script can be executed with 4 Standalone Extra Modes: 
 > 
 > - **Find Duplicates** (-fdup, --find-duplicates <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER> ...])
