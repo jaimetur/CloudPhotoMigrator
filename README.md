@@ -50,197 +50,218 @@ Then you just need to call it depending on your environment:
 ## Syntax:
 ```
 ---------------------------------------------------------------------------------------------------------
-usage: CloudPhotoMigrator.run/exe [-h] [-v] [-nlog] [-i <INPUT_FOLDER>] [-o <OUTPUT_FOLDER>]
-                                  [-AUTO <SOURCE> <TARGET>]
+Usage: CloudPhotoMigrator.run/exe [-h] [-v] [-i <INPUT_FOLDER>] [-o <OUTPUT_FOLDER>]
+                                  [-AlbFld <ALBUMS_FOLDER> [<ALBUMS_FOLDER> ...]]
+                                  [-rAlbAss] [-nolog] [-AUTO <SOURCE> <TARGET>]
                                   [-gitf <TAKEOUT_FOLDER>] [-gofs <SUFIX>]
                                   [-gafs ['flatten', 'year', 'year/month', 'year-month']]
                                   [-gnas ['flatten', 'year', 'year/month', 'year-month']]
                                   [-gcsa] [-gics] [-gmtf] [-grdf] [-gsef] [-gsma] [-gsgt]
-                                  [-sde] [-sdd] [-suf <INPUT_FOLDER>]
-                                  [-sua <ALBUMS_FOLDER>] [-suA <INPUT_FOLDER>]
-                                  [-sda <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
-                                  [-sdA <OUTPUT_FOLDER>] [-ide] [-idd]
-                                  [-iuf <INPUT_FOLDER>] [-iua <ALBUMS_FOLDER>]
-                                  [-iuA <INPUT_FOLDER>]
-                                  [-ida <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
-                                  [-idA <OUTPUT_FOLDER>] [-ido] [-idaa] [-idal] [-iaa]
-                                  [-fdup <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER>...]]
-                                  [-pdup <DUPLICATES_REVISED_CSV>]
-                                  [-fsym <FOLDER_TO_FIX>] [-frcb <ALBUMS_FOLDER>]
+                                  [-suAlb <ALBUMS_FOLDER>]
+                                  [-sdAlb <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
+                                  [-suAll <INPUT_FOLDER>] [-sdAll <OUTPUT_FOLDER>]
+                                  [-srEmpAlb] [-srDupAlb] [-srALL] [-srAllAlb]
+                                  [-iuAlb <ALBUMS_FOLDER>]
+                                  [-idAlb <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
+                                  [-iuAll <INPUT_FOLDER>] [-idAll <OUTPUT_FOLDER>]
+                                  [-irEmpAlb] [-irDupAlb] [-irALL] [-irAllAlb] [-irOrphan] 
+                                  [-findDup <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER>...]]
+                                  [-procDup <DUPLICATES_REVISED_CSV>]
+                                  [-fixSym <FOLDER_TO_FIX>] [-renFldcb <ALBUMS_FOLDER>]
 
 CloudPhotoMigrator v3.0.0-alpha - 2025-02-03
 
-Script (based on GPTH Tool) to Process Google Takeout Photos and much more useful features
-(remove duplicates, fix metadata, organize per year/month folder, separate Albums, fix symlinks, etc...).
+Multi-Platform/Multi-Arch toot designed to Interact and Manage different Photo Cloud
+Services such as Google Photos, Synology Photos, Immich Photos & Apple Photos.
+
 (c) 2024-2025 by Jaime Tur (@jaimetur)
 
-optional arguments:
+Optional arguments:
 
--h,    --help
-         show this help message and exit
--v,    --version
-         Show the script name, version, and date, then exit.
--nlog, --no-log-file
-         Skip saving output messages to execution log file.
--i,    --input-folder <INPUT_FOLDER>
-         Specify the input folder that you want to process.
--o,    --output-folder <OUTPUT_FOLDER>
-         Specify the output folder to save the result of the processing action.
--AUTO, --AUTOMATED-MIGRATION ('<SOURCE>', '<TARGET>')
-         This process will do an AUTOMATED-MIGRATION process to Download all your Assets
-         (including Albums) from the <SOURCE> Cloud Service and Upload them to the
-         <TARGET> Cloud Service (including all Albums that you may have on the <SOURCE>
-         Cloud Service.
+-h,        --help
+             show this help message and exit
+-v,        --version
+             Show the script name, version, and date, then exit.
+-i,        --input-folder <INPUT_FOLDER>
+             Specify the input folder that you want to process.
+-o,        --output-folder <OUTPUT_FOLDER>
+             Specify the output folder to save the result of the processing action.
+-AlbFld,   --albums-folders <ALBUMS_FOLDER>
+             If used together with '-iuAll, --immich-upload-all' or '-iuAll, --immich-
+             upload-all', it will create an Album per each subfolder found in
+             <ALBUMS_FOLDER>.
+-rAlbAss,  --remove-albums-assets
+             If used together with '-srAllAlb, --synology-remove-all-albums' or
+             '-irAllAlb, --immich-remove-all-albums', it will also delete the assets
+             (photos/videos) inside each album.
+-nolog,    --no-log-file
+             Skip saving output messages to execution log file.
+-AUTO,     --AUTOMATED-MIGRATION ('<SOURCE>', '<TARGET>')
+             This process will do an AUTOMATED-MIGRATION process to Download all your
+             Assets (including Albums) from the <SOURCE> Cloud Service and Upload them
+             to the <TARGET> Cloud Service (including all Albums that you may have on
+             the <SOURCE> Cloud Service.
 
-         Posible values for:
-             <SOURCE> : ['google-photos', 'synology-photos', 'immich-photos']
-             <TARGET> : ['synology-photos', 'immich-photos']
+             Posible values for:
+                 <SOURCE> : ['google-photos', 'synology-photos', 'immich-photos']
+                 <TARGET> : ['synology-photos', 'immich-photos']
 
 
-EXTRA MODES: Google Photos Takeout Management:
-----------------------------------------------
+GOOGLE PHOTOS TAKEOUT MANAGEMENT:
+---------------------------------
 Following arguments allow you to interact with Google Photos Takeout Folder.
 In this mode, you can use more than one optional arguments from the below list.
 If only the argument -gtif, --google-takeout-input-folder <TAKEOUT_FOLDER> is detected,
 then the script will use the default values for the rest of the arguments for this extra
 mode.
 
--gitf, --google-input-takeout-folder <TAKEOUT_FOLDER>
-         Specify the Takeout folder to process. If any Zip file is found inside it, the
-         Zip will be extracted to the folder 'Unzipped_Takeout_TIMESTAMP', and will use
-         the that folder as input <TAKEOUT_FOLDER>. Default: 'Takeout'.
--gofs, --google-output-folder-suffix <SUFIX>
-         Specify the suffix for the output folder. Default: 'fixed'
--gafs, --google-albums-folders-structure ['flatten', 'year', 'year/month', 'year-month']
-         Specify the type of folder structure for each Album folder (Default:
-         'flatten').
--gnas, --google-no-albums-folder-structure ['flatten', 'year', 'year/month', 'year-month']
-         Specify the type of folder structure for 'Others' folder (Default:
-         'year/month').
--gcsa, --google-create-symbolic-albums
-         Creates symbolic links for Albums instead of duplicate the files of each Album.
-         (Useful to save disk space but may not be portable to other systems).
--gics, --google-ignore-check-structure
-         Ignore Check Google Takeout structure ('.json' files, 'Photos from ' sub-
-         folders, etc..), and fix all files found on <TAKEOUT_FOLDER> trying to guess
-         timestamp from them.
--gmtf, --google-move-takeout-folder
-         Move original assets to <OUTPUT_TAKEOUT_FOLDER>.
-         CAUTION: Useful to avoid disk space duplication and improve execution speed,
-         but you will lost your original unzipped files!!!.
-         Use only if you keep the original zipped files or you have disk space
-         limitations and you don't mind to lost your original unzipped files.
--grdf, --google-remove-duplicates-files
-         Remove Duplicates files in <OUTPUT_TAKEOUT_FOLDER> after fixing them.
--gsef, --google-skip-extras-files
-         Skip processing extra photos such as  -edited, -effects photos.
--gsma, --google-skip-move-albums
-         Skip moving albums to 'Albums' folder.
--gsgt, --google-skip-gpth-tool
-         Skip processing files with GPTH Tool.
-         CAUTION: This option is NOT RECOMMENDED because this is the Core of the Google
-         Photos Takeout Process. Use this flag only for testing purposses.
+-gitf,     --google-input-takeout-folder <TAKEOUT_FOLDER>
+             Specify the Takeout folder to process. If any Zip file is found inside it,
+             the Zip will be extracted to the folder 'Unzipped_Takeout_TIMESTAMP', and
+             will use the that folder as input <TAKEOUT_FOLDER>. Default: 'Takeout'.
+-gofs,     --google-output-folder-suffix <SUFIX>
+             Specify the suffix for the output folder. Default: 'fixed'
+-gafs,     --google-albums-folders-structure ['flatten', 'year', 'year/month', 'year-month']
+             Specify the type of folder structure for each Album folder (Default:
+             'flatten').
+-gnas,     --google-no-albums-folder-structure ['flatten', 'year', 'year/month', 'year-month']
+             Specify the type of folder structure for 'No-Albums' folder (Default:
+             'year/month').
+-gcsa,     --google-create-symbolic-albums
+             Creates symbolic links for Albums instead of duplicate the files of each
+             Album. (Useful to save disk space but may not be portable to other
+             systems).
+-gics,     --google-ignore-check-structure
+             Ignore Check Google Takeout structure ('.json' files, 'Photos from ' sub-
+             folders, etc..), and fix all files found on <TAKEOUT_FOLDER> trying to
+             guess timestamp from them.
+-gmtf,     --google-move-takeout-folder
+             Move original assets to <OUTPUT_TAKEOUT_FOLDER>.
+             CAUTION: Useful to avoid disk space duplication and improve execution
+             speed, but you will lost your original unzipped files!!!.
+             Use only if you keep the original zipped files or you have disk space
+             limitations and you don't mind to lost your original unzipped files.
+-grdf,     --google-remove-duplicates-files
+             Remove Duplicates files in <OUTPUT_TAKEOUT_FOLDER> after fixing them.
+-gsef,     --google-skip-extras-files
+             Skip processing extra photos such as  -edited, -effects photos.
+-gsma,     --google-skip-move-albums
+             Skip moving albums to 'Albums' folder.
+-gsgt,     --google-skip-gpth-tool
+             Skip processing files with GPTH Tool.
+             CAUTION: This option is NOT RECOMMENDED because this is the Core of the
+             Google Photos Takeout Process. Use this flag only for testing purposses.
 
 
-EXTRA MODES: Synology Photos Management:
----------------------------------------
+SYNOLOGY PHOTOS MANAGEMENT:
+---------------------------
 Following arguments allow you to interact with Synology Photos.
 If more than one optional arguments are detected, only the first one will be executed.
 
--sde,  --synology-delete-empty-albums
-         The script will look for all Albums in Synology Photos database and if any
-         Album is empty, will remove it from Synology Photos database.
--sdd,  --synology-delete-duplicates-albums
-         The script will look for all Albums in Synology Photos database and if any
-         Album is duplicated, will remove it from Synology Photos database.
--suf,  --synology-upload-folder <INPUT_FOLDER>
-         The script will look for all Photos/Videos within <INPUT_FOLDER> and will
-         upload them into Synology Photos.
--sua,  --synology-upload-albums <ALBUMS_FOLDER>
-         The script will look for all Albums within <ALBUMS_FOLDER> and will create one
-         Album per folder into Synology Photos.
--suA,  --synology-upload-all <INPUT_FOLDER>
-         The script will look for all Assets within <INPUT_FOLDER> and will upload them
-         into Synology Photos.
-         - If the <INPUT_FOLDER> contains a Subfolder called 'Albums' then, all assets
-         inside each subfolder of Albums willl be associated to a new Album in Synology
-         Photos with the same name as the subfolder
--sda,  --synology-download-albums <ALBUMS_NAME>
-         The Script will connect to Synology Photos and download the Album whose name is
-         <ALBUMS_NAME> to the folder 'Download_Synology' within the Synology Photos root
-         folder.
-         - To extract all albums mathing any pattern you can use patterns in
-         ALBUMS_NAME, i.e: --synology-download-albums 'dron*' to download all albums
-         starting with the word 'dron' followed by other(s) words.
-         - To download several albums you can separate their names by comma or space and
-         put the name between double quotes. i.e: --synology-download-albums 'album1',
-         'album2', 'album3'.
-         - To download ALL Albums use 'ALL' as <ALBUMS_NAME>.
--sdA,  --synology-download-all <OUTPUT_FOLDER>
-         The Script will connect to Synology Photos and will download all the Album and
-         Assets without Albums into the folder <OUTPUT_FOLDER>.
-         - All Albums will be downloaded within a subfolder of <OUTPUT_FOLDER>/Albums/
-         with the same name of the Album and all files will be flattened into it.
-         - Assets with no Albums associated will be downloaded withn a subfolder called
-         <OUTPUT_FOLDER>/Others/ and will have a year/month structure inside.
+-suAlb,    --synology-upload-albums <ALBUMS_FOLDER>
+             The script will look for all Subfolders with assets within <ALBUMS_FOLDER>
+             and will create one Album per subfolder into Synology Photos.
+-sdAlb,    --synology-download-albums <ALBUMS_NAME>
+             The Script will connect to Synology Photos and download the Album whose
+             name is '<ALBUMS_NAME>' to the folder 'Download_Synology' within the
+             Synology Photos root folder.
+             - To extract all albums mathing any pattern you can use patterns in
+             <ALBUMS_NAME>, i.e: --synology-download-albums 'dron*' to download all
+             albums starting with the word 'dron' followed by other(s) words.
+             - To download several albums you can separate their names by comma or space
+             and put the name between double quotes. i.e: --synology-download-albums
+             'album1', 'album2', 'album3'.
+             - To download ALL Albums use 'ALL' as <ALBUMS_NAME>.
+-suAll,    --synology-upload-all <INPUT_FOLDER>
+             The script will look for all Assets within <INPUT_FOLDER> and will upload
+             them into Synology Photos.
+             - The script will create a new Album per each Subfolder found (excluding
+             'No-Albums' folder and its subfolders) and all assets inside each subfolder
+             willl be associated to a new Album in Immich Photos with the same name as
+             the subfolder
+             - If the argument '-woAlb, --without-albums' is also passed, then this
+             function will avoid create an Album per each subfolder found in
+             <INPUT_FOLDER>.
+-sdAll,    --synology-download-all <OUTPUT_FOLDER>
+             The Script will connect to Synology Photos and will download all the Album
+             and Assets without Albums into the folder <OUTPUT_FOLDER>.
+             - All Albums will be downloaded within a subfolder of
+             <OUTPUT_FOLDER>/Albums/ with the same name of the Album and all files will
+             be flattened into it.
+             - Assets with no Albums associated will be downloaded withn a subfolder
+             called <OUTPUT_FOLDER>/No-Albums/ and will have a year/month structure
+             inside.
+-srEmpAlb, --synology-remove-empty-albums
+             The script will look for all Albums in Synology Photos database and if any
+             Album is empty, will remove it from Synology Photos database.
+-srDupAlb, --synology-remove-duplicates-albums
+             The script will look for all Albums in Synology Photos database and if any
+             Album is duplicated, will remove it from Synology Photos database.
+-srALL,    --synology-remove-all-assets
+             CAUTION!!! The script will delete ALL your Assets (Photos & Videos) and
+             also ALL your Albums from Synology database.
+-srAllAlb, --synology-remove-all-albums
+             CAUTION!!! The script will delete ALL your Albums from Synology database.
+             Optionally ALL the Assets associated to each Album can be deleted If you
+             also include the argument '-rAlbAss, --remove-albums-assets' argument.
 
 
-EXTRA MODES: Immich Photos Management:
---------------------------------------
+IMMICH PHOTOS MANAGEMENT:
+-------------------------
 Following arguments allow you to interact with Immich Photos.
 If more than one optional arguments are detected, only the first one will be executed.
 
--ide,  --immich-delete-empty-albums
-         The script will look for all Albums in Immich Photos database and if any Album
-         is empty, will remove it from Immich Photos database.
--idd,  --immich-delete-duplicates-albums
-         The script will look for all Albums in Immich Photos database and if any Album
-         is duplicated, will remove it from Immich Photos database.
--iuf,  --immich-upload-folder <INPUT_FOLDER>
-         The script will look for all Photos/Videos within <INPUT_FOLDER> and will
-         upload them into Immich Photos.
--iua,  --immich-upload-albums <ALBUMS_FOLDER>
-         The script will look for all Albums within <ALBUMS_FOLDER> and will create one
-         Album per folder into Immich Photos.
--iuA,  --immich-upload-all <INPUT_FOLDER>
-         The script will look for all Assets within <INPUT_FOLDER> and will upload them
-         into Immich Photos.
-         - If the <INPUT_FOLDER> contains a Subfolder called 'Albums' then, all assets
-         inside each subfolder of Albums willl be associated to a new Album in Synology
-         Photos with the same name as the subfolder
--ida,  --immich-download-albums <ALBUMS_NAME>
-         The Script will connect to Immich Photos and download the Album whose name is
-         <ALBUMS_NAME> to the folder 'Download_Immich' within the script execution
-         folder.
-         - To extract all albums mathing any pattern you can use patterns in
-         ALBUMS_NAME, i.e: --immich-download-albums 'dron*' to download all albums
-         starting with the word 'dron' followed by other(s) words.
-         - To download several albums you can separate their names by comma or space and
-         put the name between double quotes. i.e: --immich-download-albums 'album1',
-         'album2', 'album3'.
-         - To download ALL Albums use 'ALL' as <ALBUMS_NAME>.
--idA,  --immich-download-all <OUTPUT_FOLDER>
-         The Script will connect to Immich Photos and will download all the Album and
-         Assets without Albums into the folder <OUTPUT_FOLDER>.
-         - All Albums will be downloaded within a subfolder of <OUTPUT_FOLDER>/Albums/
-         with the same name of the Album and all files will be flattened into it.
-         - Assets with no Albums associated will be downloaded withn a subfolder called
-         <OUTPUT_FOLDER>/Others/ and will have a year/month structure inside.
--ido,  --immich-delete-orphan-assets
-         The script will look for all Orphan Assets in Immich Database and will delete
-         them. IMPORTANT: This feature requires a valid ADMIN_API_KEY configured in
-         Config.ini.
--idaa, --immich-delete-all-assets
-         CAUTION!!! The script will delete ALL your Assets (Photos & Videos) and also
-         ALL your Albums from Immich database.
--idal, --immich-delete-all-albums
-         CAUTION!!! The script will delete ALL your Albums from Immich database.
-         Optionally ALL the Assets associated to each Album can be deleted If you also
-         include the argument '-iaa, --including-albums-assets' argument.
--iaa,  --including-albums-assets
-         If used together with --immich-delete-all-albums, it will also delete the
-         assets (photos/videos) inside each album.
-
+-iuAlb,    --immich-upload-albums <ALBUMS_FOLDER>
+             The script will look for all Subfolders with assets within <ALBUMS_FOLDER>
+             and will create one Album per subfolder into Immich Photos.
+-idAlb,    --immich-download-albums <ALBUMS_NAME>
+             The Script will connect to Immich Photos and download the Album whose name
+             is '<ALBUMS_NAME>' to the folder 'Download_Immich' within the script
+             execution folder.
+             - To extract all albums mathing any pattern you can use patterns in
+             ALBUMS_NAME, i.e: --immich-download-albums 'dron*' to download all albums
+             starting with the word 'dron' followed by other(s) words.
+             - To download several albums you can separate their names by comma or space
+             and put the name between double quotes. i.e: --immich-download-albums
+             'album1', 'album2', 'album3'.
+             - To download ALL Albums use 'ALL' as <ALBUMS_NAME>.
+-iuAll,    --immich-upload-all <INPUT_FOLDER>
+             The script will look for all Assets within <INPUT_FOLDER> and will upload
+             them into Immich Photos.
+             - The script will create a new Album per each Subfolder found (excluding
+             'No-Albums' folder and its subfolders) and all assets inside each subfolder
+             willl be associated to a new Album in Immich Photos with the same name as
+             the subfolder
+             - If the argument '-woAlb, --without-albums' is also passed, then this
+             function will avoid create an Album per each subfolder found in
+             <INPUT_FOLDER>.
+-idAll,    --immich-download-all <OUTPUT_FOLDER>
+             The Script will connect to Immich Photos and will download all the Album
+             and Assets without Albums into the folder <OUTPUT_FOLDER>.
+             - All Albums will be downloaded within a subfolder of
+             <OUTPUT_FOLDER>/Albums/ with the same name of the Album and all files will
+             be flattened into it.
+             - Assets with no Albums associated will be downloaded withn a subfolder
+             called <OUTPUT_FOLDER>/No-Albums/ and will have a year/month structure
+             inside.
+-irEmpAlb, --immich-remove-empty-albums
+             The script will look for all Albums in Immich Photos database and if any
+             Album is empty, will remove it from Immich Photos database.
+-irDupAlb, --immich-remove-duplicates-albums
+             The script will look for all Albums in Immich Photos database and if any
+             Album is duplicated, will remove it from Immich Photos database.
+-irALL,    --immich-remove-all-assets
+             CAUTION!!! The script will delete ALL your Assets (Photos & Videos) and
+             also ALL your Albums from Immich database.
+-irAllAlb, --immich-remove-all-albums
+             CAUTION!!! The script will delete ALL your Albums from Immich database.
+             Optionally ALL the Assets associated to each Album can be deleted If you
+             also include the argument '-rAlbAss, --remove-albums-assets' argument.
+-irOrphan, --immich-remove-orphan-assets
+             The script will look for all Orphan Assets in Immich Database and will
+             delete them. IMPORTANT: This feature requires a valid ADMIN_API_KEY
+             configured in CONFIG.ini.
+             
 
 OTHER STANDALONE EXTRA MODES:
 -----------------------------
@@ -248,25 +269,27 @@ Following arguments can be used to execute the Script in any of the usefull addi
 Extra Modes included.
 If more than one Extra Mode is detected, only the first one will be executed.
 
--fdup, --find-duplicates <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER> ...]
-         Find duplicates in specified folders.
-         <ACTION> defines the action to take on duplicates ('move', 'delete' or 'list').
-         Default: 'list'
-         <DUPLICATES_FOLDER> are one or more folders (string or list), where the script
-         will look for duplicates files. The order of this list is important to
-         determine the principal file of a duplicates set. First folder will have higher
-         priority.
--pdup, --process-duplicates <DUPLICATES_REVISED_CSV>
-         Specify the Duplicates CSV file revised with specifics Actions in Action
-         column, and the script will execute that Action for each duplicates found in
-         CSV. Valid Actions: restore_duplicate / remove_duplicate / replace_duplicate.
--fsym, --fix-symlinks-broken <FOLDER_TO_FIX>
-         The script will try to fix all symbolic links for Albums in <FOLDER_TO_FIX>
-         folder (Useful if you have move any folder from the OUTPUT_TAKEOUT_FOLDER and
-         some Albums seems to be empty.
--frcb, --folders-rename-content-based <ALBUMS_FOLDER>
-         Usefull to rename and homogenize all Albums folders found in <ALBUMS_FOLDER>
-         based on the date content found.
+-findDup,  --find-duplicates <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER> ...]
+             Find duplicates in specified folders.
+             <ACTION> defines the action to take on duplicates ('move', 'delete' or
+             'list'). Default: 'list'
+             <DUPLICATES_FOLDER> are one or more folders (string or list), where the
+             script will look for duplicates files. The order of this list is important
+             to determine the principal file of a duplicates set. First folder will have
+             higher priority.
+-procDup,  --process-duplicates <DUPLICATES_REVISED_CSV>
+             Specify the Duplicates CSV file revised with specifics Actions in Action
+             column, and the script will execute that Action for each duplicates found
+             in CSV. Valid Actions: restore_duplicate / remove_duplicate /
+             replace_duplicate.
+-fixSym,   --fix-symlinks-broken <FOLDER_TO_FIX>
+             The script will try to fix all symbolic links for Albums in <FOLDER_TO_FIX>
+             folder (Useful if you have move any folder from the OUTPUT_TAKEOUT_FOLDER
+             and some Albums seems to be empty.
+-renFldcb, --rename-folders-content-based <ALBUMS_FOLDER>
+             Usefull to rename and homogenize all Albums folders found in
+             <ALBUMS_FOLDER> based on the date content found.
+      
 ---------------------------------------------------------------------------------------------------------
 ```
 **Examples of use:**
@@ -278,14 +301,14 @@ If more than one Extra Mode is detected, only the first one will be executed.
  
 In this example, the script will Process you Takeout Files found in folder './MyTakeout' (Unzipping them if needed) and fix
 all files found to set the correct date and time, and identifying wich assets belongs to each Album created on Google Photos. 
-  - After that, the script will create a folder structure based on year/month for the folder '<OUTPUT_TAKEOUT_FOLDER>/Others' (by default).  
+  - After that, the script will create a folder structure based on year/month for the folder '<OUTPUT_TAKEOUT_FOLDER>/No-Albums' (by default).  
   - Also, the script will create a flatten folder structure for each Album subfolder found in '<OUTPUT_TAKEOUT_FOLDER>/Albums.'  
   - Finally, the output files will be placed into './MyTakeout_fixed_timestamp' folder whre timestamp is the timestamp of the execution.
 
 
 - **Example 2**:
 ```
-./CloudPhotoMigrator.run --folders-rename-content-based ./MyTakeout
+./CloudPhotoMigrator.run --rename-folders-content-based ./MyTakeout
 ```
 
 In this example, the script will Process your Takeout or Library of photos in folder './MyTakeout' (need to be unzipped) and will rename
@@ -301,13 +324,13 @@ This step is useful if you want to Upload all your Albums to a new Cloud Service
 >## <span style="color:green">Automated Migration Feature</span>
 >From version 3.0.0 onwards, the script supports a new Extra Mode called -AUTO, --AUTOMATED-MIGRATION Mode. 
 >
->If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will automatically do the whole migration jon from \<SOURCE> Cloud Service to \<TARGET> Cloud Service.
+>If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will automatically do the whole migration jon from \<SOURCE> Cloud Service to \<TARGET> Cloud Service.
 >The script will do a FULLY-AUTOMATED job which has two steps:  
->  - First, the script will Download all your assets from \<SOURCE> Cloud Service (if you have configured properly the Config.ini file), or process the \<SOURCE> folder in case that you specify a path.
+>  - First, the script will Download all your assets from \<SOURCE> Cloud Service (if you have configured properly the CONFIG.ini file), or process the \<SOURCE> folder in case that you specify a path.
 >    - In this step, the output will be a \<OUTPUT_FOLDER> containing two subfolders:
 >      - 'Albums': Contains all the assets associated to some Album(s) within your \<SOURCE> Cloud Service
->      - 'Others': Contains all the assets with no Album(s) assciated within your \<SOURCE> Cloud Service
->  - Second, the script will connect to yourto \<TARGET> Cloud Service (if you have configured properly the Config.ini file) and will 
+>      - 'No-Albums': Contains all the assets with no Album(s) assciated within your \<SOURCE> Cloud Service
+>  - Second, the script will connect to yourto \<TARGET> Cloud Service (if you have configured properly the CONFIG.ini file) and will 
 >    upload all the assets processed in previous step, creating a new Album per each Album found in your \<SOURCE> Cloud Service (or \<SOURCE> folder if you specifyy a path), 
 >    and will associate all the assets included in each Album in the same way that you had on your \<SOURCE> Cloud Service.
 
@@ -324,7 +347,7 @@ To execute this Extra Mode, you can use the new Flag: '-AUTO, --AUTOMATED-MIGRAT
 In this example, the script will do a FULLY-AUTOMATED job which has two steps:  
     - First, the script will process the folder './MyTakeout' (Unzipping them if needed), fixing all files found on it, to set the
       correct date and time, and identifying wich assets belongs to each Album created on Google Photos. 
-    - Second, the script will connect to your Synology Photos account (if you have configured properly the Config.ini file) and will 
+    - Second, the script will connect to your Synology Photos account (if you have configured properly the CONFIG.ini file) and will 
       upload all the assets processed in previous step, creating a new Album per each Album found in your Takeout files and associating
       all the assets included in each Album in the same way that you had on your Google Photos account.
 
@@ -336,9 +359,9 @@ In this example, the script will do a FULLY-AUTOMATED job which has two steps:
 ```
 
 Withh this example, the script will do a FULLY-AUTOMATED job which has two 
-    - First, the script will process connect to your Synology Photos account (if you have configured properly the Config.ini file) and 
+    - First, the script will process connect to your Synology Photos account (if you have configured properly the CONFIG.ini file) and 
       download all the assets found in your account (sepparating those associated to som Album(s), of those without any Album associated).
-    - Second, the script will connect to your Immich Photos account (if you have configured properly the Config.ini file) and 
+    - Second, the script will connect to your Immich Photos account (if you have configured properly the CONFIG.ini file) and 
       upload all the assets processed in previous step, creating a new Album per each Album found in your Synology Photos and associating
       all the assets included in each Album in the same way that you had on your Synology Photos account.
 
@@ -346,13 +369,13 @@ Withh this example, the script will do a FULLY-AUTOMATED job which has two
 >## <span style="color:green">Google Photos Support</span>
 >From version 1.0.0 onwards, the script can process your Google Photos Takeout files to fix timestamp, geodata, organize files per year/month, organize assets within album(s) in subfolders, etc...
 >
->>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
+>>#### <span style="color:green">Example 'CONFIG.ini' for Synology Photos:</span>
 >>
 >>```
 >># Configuration for Google Photos
 >>[Google Photos]
 >>```
->For the time being, Google Photos Takeout support, does not need to include anything in the Config.ini, but it has it own section for futures features.
+>For the time being, Google Photos Takeout support, does not need to include anything in the CONFIG.ini, but it has it own section for futures features.
 
 ### <span style="color:blue">Google Takeout Mode: Process Explained:</span>
 
@@ -370,7 +393,7 @@ The whole process will do the next actions if all flags are false (by default):
    - _'-gafs, --google-albums-folders-structure'_ <'flatten', 'year', 'year/month', 'year-month'>. Applies to each Album folder. Default is ‘flatten’ for Albums
    - _'gnas, --google-no-albums-folder-structure'_ <'flatten', 'year', 'year/month', 'year-month'> Applies to ALL_PHOTOS folder (Photos without any Albums). Default is ‘year/month’ for No-Albums. 
 
-6. Then all the Albums will be moved into Albums subfolder and the Photos that does not belong to any album will be moved to '<OUTPUT_FOLDER>/Others' folder. This step can be skipped using flag _'-gsma, --google-skip-move-albums'_
+6. Then all the Albums will be moved into Albums subfolder and the Photos that does not belong to any album will be moved to '<OUTPUT_FOLDER>/No-Albums' folder. This step can be skipped using flag _'-gsma, --google-skip-move-albums'_
 
 7. Finally, the script will look in <OUTPUT_TAKEOUT_FOLDER> for any symbolic link broken and will try to fix it by looking for the original file where the symlink is pointing to.
 
@@ -380,7 +403,7 @@ The whole process will do the next actions if all flags are false (by default):
 The result will be a folder (NAMED '<INPUT_TAKEOUT_FOLDER>_{SUFIX}_{TIMESTAMP}' by default, but you can or change the default suffix _'fixed'_ by any other using the option _'-gofs, --google-output-folder-suffix <SUFIX>'_) 
 The final OUTPUT_FOLDER will include:
 - 'Albums' subfolder with all the Albums without year/month structure (by default).
-- 'Others' subfolder with all the photos with year/month structure (by default).
+- 'No-Albums' subfolder with all the photos with year/month structure (by default).
 
 Finally, if you want to use your processed assets within Synology Photos, you just need to move OUTPUT_FOLDER into your /home/Photos folder and let Synology index all files (it will take long time). After that you will be able to explore your photos chronologycally on the Synology Photos App, and all your Albums will be there when you explore the library by folder instead of chronologycally.
 
@@ -400,9 +423,9 @@ NOTE: Step 8 is disabled by default, and is only recommended if you want to save
 
 >[!NOTE]
 >## <span style="color:green">Synology Photos Support</span>
->From version 2.0.0 onwards, the script can connect to your Synology NAS and login into Synology Photos App with your credentials. The credentials need to be loaded from 'Config.ini' file and will have this format:
+>From version 2.0.0 onwards, the script can connect to your Synology NAS and login into Synology Photos App with your credentials. The credentials need to be loaded from 'CONFIG.ini' file and will have this format:
 >
->>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
+>>#### <span style="color:green">Example 'CONFIG.ini' for Synology Photos:</span>
 >>
 >>```
 >># Configuration for Synology Photos
@@ -423,11 +446,11 @@ NOTE: Step 8 is disabled by default, and is only recommended if you want to save
 ### <span style="color:blue">Delete Empty Albums in Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Delete Empty Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Empty Albums in Synology Photos database.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Empty Albums in Synology Photos database.  
 
 If any Empty Album is found, the script will remove it from Synology Photos.  
 
-To execute this Extra Mode, you can use the Flag: _'--synology-delete-empty-albums'_ 
+To execute this Extra Mode, you can use the Flag: _'--synology-remove-empty-albums'_ 
 
 Example of use:
 ```
@@ -439,11 +462,11 @@ With this example, the script will connect to Synology Photos database and will 
 ### <span style="color:blue">Delete Duplicates Albums in Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Delete Duplicates Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Duplicates Albums in Synology Photos database.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Duplicates Albums in Synology Photos database.  
 
 If any Duplicated Album is found, the script will remove it from Synology Photos.  
 
-To execute this Extra Mode, you can use the Flag: _'--synology-delete-duplicates-albums'_
+To execute this Extra Mode, you can use the Flag: _'--synology-remove-duplicates-albums'_
 
 Example of use:
 ```
@@ -455,7 +478,7 @@ With this example, the script will connect to Synology Photos database and will 
 ### <span style="color:blue">Upload Folder into Synology Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Upload Folder into Synology Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will upload all the asseets contained in <INPUT_FOLDER> that are supported by Synology Photos.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will upload all the asseets contained in <INPUT_FOLDER> that are supported by Synology Photos.  
 
 The folder <INPUT_FOLDER> can be passed using the Flag: _'-suf,  --synology-upload-folder <INPUT_FOLDER>'_ 
 
@@ -476,7 +499,7 @@ With this example, the script will connect to Synology Photos database and proce
 ### <span style="color:blue">Upload Albums into Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Create Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Synology Photos and with the same Album name as Album folder.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Synology Photos and with the same Album name as Album folder.  
 
 The folder <ALBUMS_FOLDER> can be passed using the Flag: _'-sua,  --synology-upload-albums <ALBUMS_FOLDER>'_ 
 
@@ -497,7 +520,7 @@ With this example, the script will connect to Synology Photos database and proce
 ### <span style="color:blue">Download Albums from Synology Photos:</span>
 From version 2.3.0 onwards, the script can be executed in 'Download Albums from Synology Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect to Synology Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Synology_Photos_Albums' within the Synology Photos root folder.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect to Synology Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Synology_Photos_Albums' within the Synology Photos root folder.  
 
 To extract several albums you can separate their names by comma or space and put the name between double quotes. i.e: --synology-download-albums "album1", "album2", "album3".  
 
@@ -521,9 +544,9 @@ With this example, the script will connect to Synology Photos database and extra
 
 > [!NOTE]
 > ## <span style="color:green">Immich Photos Support</span>
->From version 3.0.0 onwards, the script can connect to your Immich Photos account with your credentials or API. The credentials/API need to be loaded from 'Config.ini' file and will have this format:
+>From version 3.0.0 onwards, the script can connect to your Immich Photos account with your credentials or API. The credentials/API need to be loaded from 'CONFIG.ini' file and will have this format:
 >
->>#### <span style="color:green">Example 'Config.ini' for Immich Photos:</span>
+>>#### <span style="color:green">Example 'CONFIG.ini' for Immich Photos:</span>
 >>
 >>```
 >># Configuration for Immich Photos
@@ -544,11 +567,11 @@ With this example, the script will connect to Synology Photos database and extra
 ### <span style="color:blue">Delete Empty Albums in Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Delete Empty Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Empty Albums in Immich Photos database.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Empty Albums in Immich Photos database.  
 
 If any Empty Album is found, the script will remove it from Immich Photos.  
 
-To execute this Extra Mode, you can use the Flag: _'--immich-delete-empty-albums'_ 
+To execute this Extra Mode, you can use the Flag: _'--immich-remove-empty-albums'_ 
 
 Example of use:
 ```
@@ -560,11 +583,11 @@ With this example, the script will connect to Immich Photos database and will de
 ### <span style="color:blue">Delete Duplicates Albums in Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Delete Duplicates Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Duplicates Albums in Immich Photos database.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Duplicates Albums in Immich Photos database.  
 
 If any Duplicated Album is found, the script will remove it from Immich Photos.  
 
-To execute this Extra Mode, you can use the Flag: _'--immich-delete-duplicates-albums'_
+To execute this Extra Mode, you can use the Flag: _'--immich-remove-duplicates-albums'_
 
 Example of use:
 ```
@@ -576,7 +599,7 @@ With this example, the script will connect to Immich Photos database and will de
 ### <span style="color:blue">Upload Folder into Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Upload Folder into Immich Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will upload all the asseets contained in <INPUT_FOLDER> that are supported by Immich Photos.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will upload all the asseets contained in <INPUT_FOLDER> that are supported by Immich Photos.  
 
 The folder <INPUT_FOLDER> can be passed using the Flag: _'-iuf,  --immich-upload-folder <INPUT_FOLDER>'_ 
 
@@ -597,7 +620,7 @@ With this example, the script will connect to Immich Photos database and process
 ### <span style="color:blue">Upload Albums into Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Create Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Immich Photos and with the same Album name as Album folder.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Immich Photos and with the same Album name as Album folder.  
 
 The folder <ALBUMS_FOLDER> can be passed using the Flag: _'-iua,  --immich-upload-albums <ALBUMS_FOLDER>'_ 
 
@@ -618,7 +641,7 @@ With this example, the script will connect to Immich Photos database and process
 ### <span style="color:blue">Download Albums from Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Download Albums from Immich Photos' Mode. 
 
-If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect to Immich Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Immich_Photos_Albums' within the Immich Photos root folder.  
+If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect to Immich Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Immich_Photos_Albums' within the Immich Photos root folder.  
 
 To extract several albums you can separate their names by comma or space and put the name between double quotes. i.e: --immich-download-albums "album1", "album2", "album3".  
 
@@ -645,10 +668,10 @@ With this example, the script will connect to Immich Photos database and extract
 > ## <span style="color:green">Other Standalone Features</span>
 >Additionally, this script can be executed with 4 Standalone Extra Modes: 
 > 
-> - **Find Duplicates** (-fdup, --find-duplicates <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER> ...])
-> - **Process Duplicates** (-pdup, --process-duplicates <DUPLICATES_REVISED_CSV>)
-> - **Fix Symbolic Links Broken** (-fsym, --fix-symlinks-broken <FOLDER_TO_FIX>)
-> - **Folder Rename Content Based** (-frcb, --folders-rename-content-based <ALBUMS_FOLDER>)
+> - **Find Duplicates** (-findDup, --find-duplicates <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER> ...])
+> - **Process Duplicates** (-procDup, --process-duplicates <DUPLICATES_REVISED_CSV>)
+> - **Fix Symbolic Links Broken** (-fixSym, --fix-symlinks-broken <FOLDER_TO_FIX>)
+> - **Folder Rename Content Based** (-renFldcb, --rename-folders-content-based <ALBUMS_FOLDER>)
 >
 > If more than one Stand Alone Extra Mode is detected, only the first one will be executed
 
@@ -720,7 +743,7 @@ Recommendation: Use this Extra Mode before to create Synology Photos Albums in o
 
 Example of use:
 ```
-./CloudPhotoMigrator.run ---folders-rename-content-based ./My_Albums_Folder
+./CloudPhotoMigrator.run ---rename-folders-content-based ./My_Albums_Folder
 ```
 With this example, the script will rename all subfolders within ./My_Albums_Folder (only first subfolder level) according to the format described above. If the subfolder does not contain any file, the folder will not be renamed.
 
