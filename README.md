@@ -2,10 +2,27 @@
 
 Welcome to <span style="color:green">**CloudPhotoMigrator** </span>Tool:
 
-This tool has been designed to Interact and Manage different Photo Cloud Services. As of today, the Supported Photo Cloud Services are:
+This tool has been designed to Interact and Manage different Photos Cloud Services. As of today, the Supported Photo Cloud Services are:
 - **Google Photos**
-- **Synology Photos**
-- **Immich Photos**
+- **Synology Photos** - Features included:
+  - Upload Album(s)
+  - Upload ALL (from folder)
+  - Download Album(s)
+  - Download ALL (into folder)
+  - Remove ALL Assets
+  - Remove ALL Albums
+  - Remove Empty Albums
+  - Remove Duplicates Albums
+- **Immich Photos** - Features included:
+  - Upload Album(s)
+  - Upload ALL (from folder)
+  - Download Album(s)
+  - Download ALL (into folder)
+  - Remove ALL Assets
+  - Remove ALL Albums
+  - Remove Empty Albums
+  - Remove Duplicates Albums
+  - Remove Orphans Assets
 - **Apple Photos**  
   (not available yet but is on the ROADMAP.md for next release)
 
@@ -60,18 +77,18 @@ Usage: CloudPhotoMigrator.run/exe [-h] [-v] [-i <INPUT_FOLDER>] [-o <OUTPUT_FOLD
                                   [-suAlb <ALBUMS_FOLDER>]
                                   [-sdAlb <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
                                   [-suAll <INPUT_FOLDER>] [-sdAll <OUTPUT_FOLDER>]
-                                  [-srEmpAlb] [-srDupAlb] [-srALL] [-srAllAlb]
+                                  [-srEmpAlb] [-srDupAlb] [-srAll] [-srAllAlb]
                                   [-iuAlb <ALBUMS_FOLDER>]
                                   [-idAlb <ALBUMS_NAME> [<ALBUMS_NAME> ...]]
                                   [-iuAll <INPUT_FOLDER>] [-idAll <OUTPUT_FOLDER>]
-                                  [-irEmpAlb] [-irDupAlb] [-irALL] [-irAllAlb] [-irOrphan] 
+                                  [-irEmpAlb] [-irDupAlb] [-irAll] [-irAllAlb] [-irOrphan] 
                                   [-findDup <ACTION> <DUPLICATES_FOLDER> [<DUPLICATES_FOLDER>...]]
                                   [-procDup <DUPLICATES_REVISED_CSV>]
                                   [-fixSym <FOLDER_TO_FIX>] [-renFldcb <ALBUMS_FOLDER>]
 
 CloudPhotoMigrator v3.0.0-alpha - 2025-02-03
 
-Multi-Platform/Multi-Arch toot designed to Interact and Manage different Photo Cloud
+Multi-Platform/Multi-Arch tool designed to Interact and Manage different Photo Cloud
 Services such as Google Photos, Synology Photos, Immich Photos & Apple Photos.
 
 (c) 2024-2025 by Jaime Tur (@jaimetur)
@@ -197,7 +214,7 @@ If more than one optional arguments are detected, only the first one will be exe
 -srDupAlb, --synology-remove-duplicates-albums
              The script will look for all Albums in Synology Photos database and if any
              Album is duplicated, will remove it from Synology Photos database.
--srALL,    --synology-remove-all-assets
+-srAll,    --synology-remove-all-assets
              CAUTION!!! The script will delete ALL your Assets (Photos & Videos) and
              also ALL your Albums from Synology database.
 -srAllAlb, --synology-remove-all-albums
@@ -250,7 +267,7 @@ If more than one optional arguments are detected, only the first one will be exe
 -irDupAlb, --immich-remove-duplicates-albums
              The script will look for all Albums in Immich Photos database and if any
              Album is duplicated, will remove it from Immich Photos database.
--irALL,    --immich-remove-all-assets
+-irAll,    --immich-remove-all-assets
              CAUTION!!! The script will delete ALL your Assets (Photos & Videos) and
              also ALL your Albums from Immich database.
 -irAllAlb, --immich-remove-all-albums
@@ -260,7 +277,7 @@ If more than one optional arguments are detected, only the first one will be exe
 -irOrphan, --immich-remove-orphan-assets
              The script will look for all Orphan Assets in Immich Database and will
              delete them. IMPORTANT: This feature requires a valid ADMIN_API_KEY
-             configured in CONFIG.ini.
+             configured in Config.ini.
              
 
 OTHER STANDALONE EXTRA MODES:
@@ -298,15 +315,22 @@ If more than one Extra Mode is detected, only the first one will be executed.
 >## <span style="color:green">Automated Migration Feature</span>
 >From version 3.0.0 onwards, the script supports a new Extra Mode called '**AUTOMATED-MIGRATION**' Mode. 
 >
->If you configure properly the file 'CONFIG.ini' (included with the tool), and execute this Extra Mode, the script will automatically do the whole migration job from \<SOURCE> Cloud Service to \<TARGET> Cloud Service.
+>If you configure properly the file 'Config.ini' (included with the tool), and execute this Extra Mode, the script will automatically do the whole migration job from \<SOURCE> Cloud Service to \<TARGET> Cloud Service.
 >The script will do a FULLY-AUTOMATED job which has two steps:  
->  - First, the script will Download all your assets from \<SOURCE> Cloud Service (if you have configured properly the CONFIG.ini file), or process the \<SOURCE> folder in case that you specify a path.
+>  - First, the script will Download all your assets from \<SOURCE> Cloud Service (if you have configured properly the Config.ini file), or process the \<SOURCE> folder in case that you specify a path.
 >    - In this step, the output will be a \<OUTPUT_FOLDER> containing two subfolders:
->      - 'Albums': Contains all the assets associated to some Album(s) within your \<SOURCE> Cloud Service
->      - 'No-Albums': Contains all the assets with no Album(s) associated within your \<SOURCE> Cloud Service
->  - Second, the script will connect to your \<TARGET> Cloud Service (if you have configured properly the CONFIG.ini file) and will 
+>      - **'Albums'**: Contains all the assets associated to some Album(s) within your \<SOURCE> Cloud Service
+>      - **'No-Albums'**: Contains all the assets with no Album(s) associated within your \<SOURCE> Cloud Service
+>  - Second, the script will connect to your \<TARGET> Cloud Service (if you have configured properly the Config.ini file) and will 
 >    upload all the assets processed in previous step, creating a new Album per each Album found in your \<SOURCE> Cloud Service (or \<SOURCE> folder if you specify a path), 
 >    and will associate all the assets included in each Album in the same way that you had on your \<SOURCE> Cloud Service.
+>  - Posible values for:
+>    - **\<SOURCE\>** : ['google-photos', 'synology-photos', 'immich-photos'] or <INPUT_FOLDER>
+>    - **\<TARGET\>** : ['synology-photos', 'immich-photos'] or <OUTPUT_FOLDER>
+>  - The idea is complete above list to allow:
+>    - **\<SOURCE\>** : ['google-photos', 'apple-photos', 'synology-photos', 'immich-photos'] or <INPUT_FOLDER>
+>    - **\<TARGET\>** : ['google-photos', 'apple-photos', 'synology-photos', 'immich-photos'] or <OUTPUT_FOLDER>
+
 
 To execute this Extra Mode, you can use the new Flag: '-AUTO, --AUTOMATED-MIGRATION \<SOURCE> \<TARGET>'
 
@@ -323,7 +347,7 @@ In this example, the script will do a FULLY-AUTOMATED job which has two steps:
     - First, the script will process the folder './MyTakeout' (Unzipping them if needed), fixing all files found on it, to set the
       correct date and time, and identifying which assets belongs to each Album created on Google Photos.  
 
-    - Second, the script will connect to your Synology Photos account (if you have configured properly the CONFIG.ini file) and will 
+    - Second, the script will connect to your Synology Photos account (if you have configured properly the Config.ini file) and will 
       upload all the assets processed in previous step, creating a new Album per each Album found in your Takeout files and associating
       all the assets included in each Album in the same way that you had on your Google Photos account.
 
@@ -336,10 +360,10 @@ In this example, the script will do a FULLY-AUTOMATED job which has two steps:
 
 Withh this example, the script will do a FULLY-AUTOMATED job which has two steps:  
 
-    - First, the script will process connect to your Synology Photos account (if you have configured properly the CONFIG.ini file) and 
+    - First, the script will process connect to your Synology Photos account (if you have configured properly the Config.ini file) and 
       download all the assets found in your account (separating those associated to som Album(s), of those without any Album associated).  
 
-    - Second, the script will connect to your Immich Photos account (if you have configured properly the CONFIG.ini file) and 
+    - Second, the script will connect to your Immich Photos account (if you have configured properly the Config.ini file) and 
       upload all the assets processed in previous step, creating a new Album per each Album found in your Synology Photos and associating
       all the assets included in each Album in the same way that you had on your Synology Photos account.
 
@@ -347,13 +371,13 @@ Withh this example, the script will do a FULLY-AUTOMATED job which has two steps
 >## <span style="color:green">Google Photos Support</span>
 >From version 1.0.0 onwards, the script can process your Google Photos Takeout files to fix timestamp, geodata, organize files per year/month, organize assets within album(s) in subfolders, etc...
 >
->>#### <span style="color:green">Example 'CONFIG.ini' for Synology Photos:</span>
+>>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
 >>
 >>```
 >># Configuration for Google Photos
 >>[Google Photos]
 >>```
->For the time being, Google Photos Takeout support, does not need to include anything in the CONFIG.ini, but it has it own section for futures features.
+>For the time being, Google Photos Takeout support, does not need to include anything in the Config.ini, but it has it own section for futures features.
 
 ### <span style="color:blue">Google Takeout Mode: Process Explained:</span>
 
@@ -416,9 +440,9 @@ all files found to set the correct date and time, and identifying which assets b
 
 >[!NOTE]
 >## <span style="color:green">Synology Photos Support</span>
->From version 2.0.0 onwards, the script can connect to your Synology NAS and login into Synology Photos App with your credentials. The credentials need to be loaded from 'CONFIG.ini' file and will have this format:
+>From version 2.0.0 onwards, the script can connect to your Synology NAS and login into Synology Photos App with your credentials. The credentials need to be loaded from 'Config.ini' file and will have this format:
 >
->>#### <span style="color:green">Example 'CONFIG.ini' for Synology Photos:</span>
+>>#### <span style="color:green">Example 'Config.ini' for Synology Photos:</span>
 >>
 >>```
 >># Configuration for Synology Photos
@@ -426,7 +450,6 @@ all files found to set the correct date and time, and identifying which assets b
 >>SYNOLOGY_URL                = http://192.168.1.11:5000                      # Change this IP by the IP that contains the Synology server or by your valid Synology URL
 >>SYNOLOGY_USERNAME           = username                                      # Your username for Synology Photos
 >>SYNOLOGY_PASSWORD           = password                                      # Your password for Synology Photos
->>SYNOLOGY_ROOT_PHOTOS_PATH   = /volume1/homes/your_username/Photos           # Your root path to Synology Photos main folder. Tipically is /volume1/homes/your_username/Photos
 >>```
 >### Features included:
 > - Upload Album(s)
@@ -441,7 +464,7 @@ all files found to set the correct date and time, and identifying which assets b
 ### <span style="color:blue">Delete Empty Albums in Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Delete Empty Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Empty Albums in Synology Photos database.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Empty Albums in Synology Photos database.  
 
 If any Empty Album is found, the script will remove it from Synology Photos.  
 
@@ -457,7 +480,7 @@ With this example, the script will connect to Synology Photos database and will 
 ### <span style="color:blue">Delete Duplicates Albums in Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Delete Duplicates Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Duplicates Albums in Synology Photos database.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will look for all Duplicates Albums in Synology Photos database.  
 
 If any Duplicated Album is found, the script will remove it from Synology Photos.  
 
@@ -473,7 +496,7 @@ With this example, the script will connect to Synology Photos database and will 
 ### <span style="color:blue">Upload Folder into Synology Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Upload Folder into Synology Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will upload all the assets contained in <INPUT_FOLDER> that are supported by Synology Photos.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will upload all the assets contained in <INPUT_FOLDER> that are supported by Synology Photos.  
 
 The folder <INPUT_FOLDER> can be passed using the Flag: _'-suf,  --synology-upload-folder <INPUT_FOLDER>'_ 
 
@@ -494,7 +517,7 @@ With this example, the script will connect to Synology Photos database and proce
 ### <span style="color:blue">Upload Albums into Synology Photos:</span>
 From version 2.0.0 onwards, the script can be executed in 'Create Albums in Synology Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Synology Photos and with the same Album name as Album folder.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Synology Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Synology Photos and with the same Album name as Album folder.  
 
 The folder <ALBUMS_FOLDER> can be passed using the Flag: _'-sua,  --synology-upload-albums <ALBUMS_FOLDER>'_ 
 
@@ -515,7 +538,7 @@ With this example, the script will connect to Synology Photos database and proce
 ### <span style="color:blue">Download Albums from Synology Photos:</span>
 From version 2.3.0 onwards, the script can be executed in 'Download Albums from Synology Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect to Synology Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Synology_Photos_Albums' within the Synology Photos root folder.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect to Synology Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Synology_Photos_Albums' within the Synology Photos root folder.  
 
 To extract several albums you can separate their names by comma or space and put the name between double quotes. i.e: --synology-download-albums "album1", "album2", "album3".  
 
@@ -539,9 +562,9 @@ With this example, the script will connect to Synology Photos database and extra
 
 > [!NOTE]
 > ## <span style="color:green">Immich Photos Support</span>
->From version 3.0.0 onwards, the script can connect to your Immich Photos account with your credentials or API. The credentials/API need to be loaded from 'CONFIG.ini' file and will have this format:
+>From version 3.0.0 onwards, the script can connect to your Immich Photos account with your credentials or API. The credentials/API need to be loaded from 'Config.ini' file and will have this format:
 >
->>#### <span style="color:green">Example 'CONFIG.ini' for Immich Photos:</span>
+>>#### <span style="color:green">Example 'Config.ini' for Immich Photos:</span>
 >>
 >>```
 >># Configuration for Immich Photos
@@ -552,11 +575,11 @@ With this example, the script will connect to Synology Photos database and extra
 >>IMMICH_USERNAME             = username                                      # Optional: Your username for Immich Photos (mandatory if not API_KEY is providen)
 >>IMMICH_PASSWORD             = password                                      # Optional: Your password for Immich Photos (mandatory if not API_KEY is providen)
 >>IMMICH_FILTER_ARCHIVE       = False                                         # Optional: Used as Filter Criteria for Assets downloading (True/False)
->>IMMICH_FILTER_FROM          =                                               # Optional: Used as Filter Criteria for Assets downloading (i.e: 2024-10-01)
->>IMMICH_FILTER_TO            =                                               # Optional: Used as Filter Criteria for Assets downloading (i.e: 2024-10-01)
->>IMMICH_FILTER_COUNTRY       =                                               # Optional: Used as Filter Criteria for Assets downloading (i.e: Spain)
->>IMMICH_FILTER_CITY          =                                               # Optional: Used as Filter Criteria for Assets downloading (i.e: ['Madrid', 'Málaga'])
->>IMMICH_FILTER_PERSON        =                                               # Optional: Used as Filter Criteria for Assets downloading (i.e: ['Mery', 'James'])
+>>IMMICH_FILTER_FROM          = *                                             # Optional: Used as Filter Criteria for Assets downloading (i.e: 2024-10-01)
+>>IMMICH_FILTER_TO            = *                                             # Optional: Used as Filter Criteria for Assets downloading (i.e: 2024-10-01)
+>>IMMICH_FILTER_COUNTRY       = *                                             # Optional: Used as Filter Criteria for Assets downloading (i.e: Spain)
+>>IMMICH_FILTER_CITY          = *                                             # Optional: Used as Filter Criteria for Assets downloading (i.e: ['Madrid', 'Málaga'])
+>>IMMICH_FILTER_PERSON        = *                                             # Optional: Used as Filter Criteria for Assets downloading (i.e: ['Mery', 'James'])
 >>```
 >### Features included:
 > - Upload Album(s)
@@ -572,7 +595,7 @@ With this example, the script will connect to Synology Photos database and extra
 ### <span style="color:blue">Delete Empty Albums in Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Delete Empty Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Empty Albums in Immich Photos database.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Empty Albums in Immich Photos database.  
 
 If any Empty Album is found, the script will remove it from Immich Photos.  
 
@@ -588,7 +611,7 @@ With this example, the script will connect to Immich Photos database and will de
 ### <span style="color:blue">Delete Duplicates Albums in Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Delete Duplicates Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Duplicates Albums in Immich Photos database.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will look for all Duplicates Albums in Immich Photos database.  
 
 If any Duplicated Album is found, the script will remove it from Immich Photos.  
 
@@ -604,7 +627,7 @@ With this example, the script will connect to Immich Photos database and will de
 ### <span style="color:blue">Upload Folder into Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Upload Folder into Immich Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will upload all the assets contained in <INPUT_FOLDER> that are supported by Immich Photos.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will upload all the assets contained in <INPUT_FOLDER> that are supported by Immich Photos.  
 
 The folder <INPUT_FOLDER> can be passed using the Flag: _'-iuf,  --immich-upload-folder <INPUT_FOLDER>'_ 
 
@@ -625,7 +648,7 @@ With this example, the script will connect to Immich Photos database and process
 ### <span style="color:blue">Upload Albums into Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Create Albums in Immich Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Immich Photos and with the same Album name as Album folder.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect automatically to your Immich Photos database and will create one Album per each Subfolder found in <ALBUMS_FOLDER> that contains at least one file supported by Immich Photos and with the same Album name as Album folder.  
 
 The folder <ALBUMS_FOLDER> can be passed using the Flag: _'-iua,  --immich-upload-albums <ALBUMS_FOLDER>'_ 
 
@@ -646,7 +669,7 @@ With this example, the script will connect to Immich Photos database and process
 ### <span style="color:blue">Download Albums from Immich Photos:</span>
 From version 3.0.0 onwards, the script can be executed in 'Download Albums from Immich Photos' Mode. 
 
-If you configure properly the file 'CONFIG.ini' and execute this Extra Mode, the script will connect to Immich Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Immich_Photos_Albums' within the Immich Photos root folder.  
+If you configure properly the file 'Config.ini' and execute this Extra Mode, the script will connect to Immich Photos and Download those Album(s) whose name is in <ALBUMS_NAME> to the folder 'Immich_Photos_Albums' within the Immich Photos root folder.  
 
 To extract several albums you can separate their names by comma or space and put the name between double quotes. i.e: --immich-download-albums "album1", "album2", "album3".  
 
@@ -767,6 +790,26 @@ This step is useful if you want to Upload all your Albums to a new Cloud Service
 I hope this can be useful for any of you.  
 Enjoy it!
 
+# ROADMAP:
+## 4.0.0 (No estimated date):
+- [ ] Include Apple Support (just for downloading)
+    - [ ] -adAlb, --apple-download-albums
+    - [ ] -adAll, --apple-download-all
+    - [ ] -auAlb, --apple-upload-albums
+    - [ ] -auAll, --apple-upload-all
+- [ ] Include native support for Google Photos through API (See: https://max-coding.medium.com/loading-photos-and-metadata-using-google-photos-api-with-python-7fb5bd8886ef)
+    - [ ] -gdAlb, --google-download-albums
+    - [ ] -gdAll, --google-download-all
+    - [ ] -guAlb, --google-upload-albums
+    - [ ] -guAll, --google-upload-all
+- [ ] Allow Google Photos and Apple Photos as TARGET in AUTOMATED-MODE
+- [ ] Add option to filter in all Immich Actions:
+    - [ ] by Dates
+    - [ ] by Country
+    - [ ] by City
+    - [ ] by Archive
+    - [ ] by Person
+  
 ## Credits
 
 <span style="color:grey">(c) 2024-2025 by Jaime Tur (@jaimetur).</span>  
